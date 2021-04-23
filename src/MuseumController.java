@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +16,9 @@ public class MuseumController {
 
 
     public static void main(String[] args) {
+
+        ArrayBlockingQueue<String[]> ticketQ = new ArrayBlockingQueue(900);
+
         // read TicketInfo
         // 8am: start to random assign the ticket to south or north entrance (put() into blockingqueue)
 

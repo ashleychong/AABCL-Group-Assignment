@@ -6,10 +6,11 @@ public class Museum {
     private ReentrantLock lock = new ReentrantLock();
     private Condition notFull = lock.newCondition();
 
-    public void enterMuseum(int numOfVisitors) {
+    public void enterMuseum(String numOfVisitors) {
+
         lock.lock();
         try {
-            numOfVisitorsInMuseum += numOfVisitors;
+            numOfVisitorsInMuseum += Integer.parseInt(numOfVisitors);
         }
         finally {
             lock.unlock();
