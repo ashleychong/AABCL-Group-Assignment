@@ -4,7 +4,7 @@ import java.util.concurrent.DelayQueue;
 
 public class DelayQDemo {
     public static void main(String[] args) {
-        BlockingQueue<DelayQElement> delayQ = new DelayQueue<>();
+        BlockingQueue<Visitor> delayQ = new DelayQueue<>();
         Random r = new Random();
 
         Clock clock = new Clock();
@@ -19,7 +19,7 @@ public class DelayQDemo {
                 try {
 //                    long delay = (long) (r.nextInt(2001) + 1000);
                     long delay = (r.nextInt(101) + 50) * 1000;
-                    delayQ.put(new DelayQElement("Element" + i, delay));
+                    delayQ.put(new Visitor("Element" + i, delay));
 
                     long nextWindow = (r.nextInt(6) + 5) * 1000;
 //                    Thread.sleep(50);

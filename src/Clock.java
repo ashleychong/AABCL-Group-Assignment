@@ -13,6 +13,10 @@ public class Clock implements Runnable {
         return currentTime;
     }
 
+    public static Calendar getTicketEndSalesTime() {
+        return ticketEndSalesTime;
+    }
+
     public static void setTicketEndSalesTime() {
 //        ticketEndSalesTime.set(Calendar.HOUR_OF_DAY, 17);
 //        ticketEndSalesTime.set(Calendar.MINUTE, 0);
@@ -58,6 +62,8 @@ public class Clock implements Runnable {
             }
             currentTime.add(Calendar.MINUTE, 1);
             System.out.println(currentTime.getTime());
+
+
 
 
 //            try {

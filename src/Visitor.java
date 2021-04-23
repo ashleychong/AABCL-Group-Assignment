@@ -1,11 +1,11 @@
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
-public class DelayQElement implements Delayed {
+public class Visitor implements Delayed {
     private String m;
     private long expireTime;
 
-    public DelayQElement(String m, long delay) {
+    public Visitor(String m, long delay) {
         this.m = m;
         this.expireTime = System.currentTimeMillis() + delay;
         System.out.println("Putting queueElement "  + m + " expiry " + this.expireTime + " duration " + delay);
