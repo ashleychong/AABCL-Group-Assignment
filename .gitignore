@@ -1,0 +1,8 @@
+/.idea/
+*.class
+*.log
+*.jar
+*.iml
+
+/src/BlockingQueueTest.java
+/src/VariableSpeedClock.java
