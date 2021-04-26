@@ -13,16 +13,31 @@ public class Ticketing implements Runnable {
     public void run() {
         int i = 1;
 
+        // wait for clock thread to set ticketEndSalesTime
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("Ticketing starts...");
+//        System.out.println("Current time: " + Clock.getCurrentTime().getTime());
+//        System.out.println("Tickets ends sale: " + Clock.getTicketEndSalesTime().getTime());
+//        System.out.println(Clock.getCurrentTime().before(Clock.getTicketEndSalesTime()));
+
         while (Clock.getCurrentTime().before(Clock.getTicketEndSalesTime())) {
+//            System.out.println("Inside loop");
             int numOfTickets = r.nextInt(4) + 1;
 
             String ticketID = "";
 
             for (int j = 1; j <= numOfTickets ; j++) {
-                ticketID += "T" + j ;
+                ticketID += "T" + i;
                 if (j < numOfTickets) {
                     ticketID += ", ";
                 }
+                i++;
             }
 
             long stayDuration = (r.nextInt(101) + 50) * 1000;
@@ -39,13 +54,14 @@ public class Ticketing implements Runnable {
 
             try {
                 ticketQ.put(ticInfo);
+                System.out.println(ticketID + " sold.");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            long nextTic = System.nanoTime() + (r.nextInt(4) + 1) * 1000000000;
+            long nextTicket = (long) (System.nanoTime() + (r.nextInt(4) + 1) * 1000000000L);
 
-            while (System.nanoTime() < nextTic) {
+            while (System.nanoTime() < nextTicket) {
                 //wait
             }
 

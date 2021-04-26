@@ -2,13 +2,23 @@ import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
 public class Visitor implements Delayed {
-    private String m;
+    private String ticketID;
+    private String entrance;
+    private String exit;
+    private int numOfVisitors;
     private long expireTime;
 
-    public Visitor(String m, long delay) {
-        this.m = m;
-        this.expireTime = System.currentTimeMillis() + delay;
-        System.out.println("Putting queueElement "  + m + " expiry " + this.expireTime + " duration " + delay);
+    public Visitor(String[] ticInfo, String exit) {
+//        System.out.println(""  + ticketID + " expiry " + this.expireTime + " duration " + delay);
+
+        this.ticketID = ticInfo[0];
+        this.numOfVisitors = Integer.parseInt(ticInfo[1]);
+        long stayDuration = Long.parseLong(ticInfo[2]);
+        this.expireTime = System.currentTimeMillis() + stayDuration;
+        this.entrance = ticInfo[3];
+        this.exit = exit;
+
+        System.out.println("Tickets " + ticketID + " entered through " + entrance + " entrance. Staying for " + (stayDuration/1000) + " minutes.");
     }
 
     @Override
@@ -33,6 +43,18 @@ public class Visitor implements Delayed {
 
     @Override
     public String toString(){
-        return m + " Expiry Time= " + expireTime;
+        return ticketID + " Expiry Time= " + expireTime;
+    }
+
+    public String getTicketID() {
+        return ticketID;
+    }
+
+    public String getExit() {
+        return exit;
+    }
+
+    public int getNumOfVisitors() {
+        return numOfVisitors;
     }
 }
