@@ -16,7 +16,7 @@ public class Entrance implements Runnable {
 
     @Override
     public void run() {
-        while (!(Clock.isMuseumClose())) {
+        while (Clock.getCurrentTime().before(Clock.getLastEnterTime())) {
 
             museum.enterMuseum(ticketQ, visitorQ);
 

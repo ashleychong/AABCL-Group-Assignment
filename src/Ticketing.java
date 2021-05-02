@@ -13,14 +13,6 @@ public class Ticketing implements Runnable {
     public void run() {
         int i = 1;
 
-        // wait for clock thread to set ticketEndSalesTime
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
         System.out.println("Ticketing starts...");
 //        System.out.println("Current time: " + Clock.getCurrentTime().getTime());
 //        System.out.println("Tickets ends sale: " + Clock.getTicketEndSalesTime().getTime());

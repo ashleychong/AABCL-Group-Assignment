@@ -2,6 +2,7 @@ import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.DelayQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,7 +22,13 @@ public class Museum {
         try {
             while (numOfVisitorsInMuseum == maxNumOfVisitorsInMuseum) {
                 System.out.println("The museum is full now. Waiting...");
-                notFull.await();
+//                notFull.await();
+                boolean awaken = notFull.await(3000, TimeUnit.MILLISECONDS);
+
+                if (!awaken) {
+                    System.out.println("No visitor leaves. Timeout...");
+                    break;
+                }
             }
 
             String[] ticInfo;
@@ -30,16 +37,11 @@ public class Museum {
 
             int allowedNumOfVisitors = maxNumOfVisitorsInMuseum - numOfVisitorsInMuseum;
 
-            while (((ticInfo = ticketQ.peek()) != null) && ((sCount + nCount) < allowedNumOfVisitors)) {
+            outerloop:
+            while (((ticInfo = ticketQ.peek()) != null) /* && ((sCount + nCount) < allowedNumOfVisitors)*/) {
                 String entrance = ticInfo[3];
                 int numOfVisitors = Integer.parseInt(ticInfo[1]);
 
-                while (numOfVisitorsInMuseum + numOfVisitors > maxNumOfVisitorsInMuseum) {
-//                    System.out.println("The museum is full now. Waiting...");
-                    System.out.println(numOfVisitorsInMuseum + " visitors in museum. " + numOfVisitors + "visitors " +
-                            " trying to " + "enter, waiting...");
-                    notFull.await();
-                }
 
 //                if (numOfVisitorsInMuseum + numOfVisitors > maxNumOfVisitorsInMuseum) {
 //                    System.out.println(numOfVisitorsInMuseum + " visitors in museum. " + numOfVisitors + " trying to " +
@@ -64,14 +66,28 @@ public class Museum {
                 else {
                     if (entrance.equalsIgnoreCase("North")) {
                         System.out.println("North entrance count: " + nCount + ", " + numOfVisitors + " " +
-                                "visitors trying to enter through North entrance. Break...");
+                                " visitors trying to enter through North entrance. Break...");
                     }
                     else if (entrance.equalsIgnoreCase("South")) {
                         System.out.println("South entrance count: " + sCount + ", " + numOfVisitors + " " +
-                                "visitors trying to enter through South entrance. Break...");
+                                " visitors trying to enter through South entrance. Break...");
                     }
                     break;
                 }
+
+
+                while (numOfVisitorsInMuseum + numOfVisitors > maxNumOfVisitorsInMuseum) {
+                    System.out.println(numOfVisitorsInMuseum + " visitors in museum. " + numOfVisitors + " visitors" +
+                            " trying to " + "enter, waiting...");
+//                    notFull.await();
+                    boolean awaken = notFull.await(3000, TimeUnit.MILLISECONDS);
+
+                    if (!awaken) {
+                        System.out.println("No visitor leaves. Timeout...");
+                        break outerloop;
+                    }
+                }
+
 
                 ticketQ.poll();
 
