@@ -55,7 +55,7 @@ public class Clock implements Runnable {
     }
 
     public static void setClearVisitorsTime() {
-        clearVisitorsTime.set(2022, Calendar.MAY,1,17,55, 0);
+        clearVisitorsTime.set(2022, Calendar.MAY,1,17,50, 0);
         clearVisitorsTimeInstant = clearVisitorsTime.toInstant();
     }
 
@@ -70,7 +70,7 @@ public class Clock implements Runnable {
     }
 
     public static void setEntranceOpenTime() {
-        entranceOpenTime.set(2022, Calendar.MAY,1,8,59, 0);
+        entranceOpenTime.set(2022, Calendar.MAY,1,9,0, 0);
     }
 
     public static boolean isMuseumClose() {
@@ -78,12 +78,8 @@ public class Clock implements Runnable {
     }
 
     public static void startClock() {
-
         currentTime.set(2022, Calendar.MAY,1,8,0, 0);
-
-
-//        String startTime = timeFormat.format(currentTime.getTime());
-//        System.out.println(currentTime.getTime());
+        // print 0800
         System.out.println(timeFormat.format(currentTime.getTime()));
     }
 
@@ -96,54 +92,23 @@ public class Clock implements Runnable {
         setClearVisitorsTime();
         setMuseumCloseTime();
 
-        while (currentTime.before(museumCloseTime)) {
-            long end = System.nanoTime() + 1000000000;
+        while (currentTime.before(museumCloseTime) || !(MuseumController.allVisitorsLeft())) {
+
+//            System.out.println("Visitor queue is empty: " + MuseumController.allVisitorsLeft());
+
+            long end = System.nanoTime() + 1000000000L;
 
             while (System.nanoTime() < end) {
                 //wait
             }
             currentTime.add(Calendar.MINUTE, 1);
             System.out.println("\n" + timeFormat.format(currentTime.getTime()));
-//            System.out.println(currentTime.getTime());
 
 
 
-
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            finally {
-//                currentTime.add(Calendar.MINUTE, 1);
-////                System.out.println(timeFormat.format(currentTime.getTime()));
-//                System.out.println(currentTime.getTime());
-//            }
         }
         isMuseumClose = true;
+
     }
 
-//    public static void main(String[] args) {
-//        Instant instant1
-//                = Instant.parse("2018-12-30T19:34:00.63Z");
-//
-//        // create other Instant
-//        Instant instant2
-//                = Instant.parse("2018-12-30T19:24:00.63Z");
-//
-//        // print instances
-//        System.out.println("Instance 1: " + instant1);
-//        System.out.println("Instance 2: " + instant2);
-//
-//        // check if instant1 is after instant2
-//        // using isAfter()
-//        boolean value = instant1.isAfter(instant2);
-//
-//        // print result
-//        System.out.println("Is Instant1 after Instant2: "
-//                + value);
-//
-//        Duration res = Duration.between(instant1, instant2);
-//        System.out.println(res.toMinutes());
-//    }
 }

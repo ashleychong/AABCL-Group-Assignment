@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Queue;
 
 public class TextReader {
     private String fileName;
@@ -21,9 +22,9 @@ public class TextReader {
             while ((curLine = br.readLine()) != null) {
                 String[] parts = curLine.split("[:,]");
                 for (int i = 0; i < parts.length; i++) {
-                    System.out.print(parts[i] + " ");
+//                    System.out.print(parts[i] + " ");
                 }
-                System.out.println();
+//                System.out.println();
                 ticketInfo.add(parts);
             }
             br.close();

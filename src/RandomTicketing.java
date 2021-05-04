@@ -1,46 +1,43 @@
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class Ticketing implements Runnable {
-    private ArrayList<String[]> allPurchases;
+public class RandomTicketing implements Runnable {
     private ArrayBlockingQueue<String[]> ticketQ;
-    private final int maxTicketsSold = 900;
     private Random r = new Random();
+    private final int maxTicketsSold = 900;
 
-    public Ticketing(ArrayList<String[]> allPurchases, ArrayBlockingQueue<String[]> ticketQ) {
-        this.allPurchases = allPurchases;
+    public RandomTicketing(ArrayBlockingQueue<String[]> ticketQ) {
         this.ticketQ = ticketQ;
     }
-
 
     @Override
     public void run() {
         int ticketID = 1;
 
         System.out.println("Ticketing starts...");
+//        System.out.println("Current time: " + Clock.getCurrentTime().getTime());
+//        System.out.println("Tickets ends sale: " + Clock.getTicketEndSalesTime().getTime());
+//        System.out.println(Clock.getCurrentTime().before(Clock.getTicketEndSalesTime()));
 
-
-        while (Clock.getCurrentTime().before(Clock.getTicketEndSalesTime()) && !(allPurchases.isEmpty())) {
-
+        while (Clock.getCurrentTime().before(Clock.getTicketEndSalesTime())) {
+//
             if (ticketID > maxTicketsSold)  {
                 System.out.println("Max ticket limit of 900 has been reached. Transaction declined.");
                 break;
             }
 
-            String[] curTickets = allPurchases.get(0);
+            int numOfTickets = r.nextInt(4) + 1;
 
-            //minutesToNextPurchase, numOfTickets, Duration
-            int minutesToNextPurchase = Integer.parseInt(curTickets[0]);
-            int numOfTickets = Integer.parseInt(curTickets[1]);
-            long stayDuration = Integer.parseInt(curTickets[2]) * 1000L;
+//            String ticketIDs = "";
+//
+//            for (int j = 1; j <= numOfTickets ; j++) {
+//                ticketIDs += "T" + ticketID;
+//                if (j < numOfTickets) {
+//                    ticketIDs += ", ";
+//                }
+//                ticketID++;
+//            }
 
-
-            long nextTicket = (long) (System.nanoTime() + (minutesToNextPurchase * 1000000000L));
-
-            while (System.nanoTime() < nextTicket) {
-                //wait
-            }
 
 
             StringBuilder ticketIDs = new StringBuilder();
@@ -66,11 +63,17 @@ public class Ticketing implements Runnable {
             }
 
 
+
+            long stayDuration = (r.nextInt(101) + 50) * 1000;
+//            long stayDuration = (r.nextInt(101) + 50) * 1000000000L;
+
+
             int choose = r.nextInt(2);
             String entrance = (choose == 0) ? "North" : "South";
 
             String[] ticInfo = new String[4];
 
+//            ticInfo[0] = ticketIDs;
             ticInfo[0] = ticketIDs.toString();
             ticInfo[1] = String.valueOf(numOfTickets);
             ticInfo[2] = String.valueOf(stayDuration);
@@ -78,6 +81,8 @@ public class Ticketing implements Runnable {
 
             try {
                 ticketQ.put(ticInfo);
+//                System.out.println(ticketIDs + " sold.");
+
 
                 if (numOfTickets == 1) {
                     System.out.println("Ticket " + ticketIDs + " sold.");
@@ -85,10 +90,18 @@ public class Ticketing implements Runnable {
                 else {
                     System.out.println("Tickets " + ticketIDs + " sold.");
                 }
+
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            allPurchases.remove(0);
+
+            long nextTicket = (long) (System.nanoTime() + (r.nextInt(2) + 1) * 1000000000L);
+
+            while (System.nanoTime() < nextTicket) {
+                //wait
+            }
+
         }
     }
 }

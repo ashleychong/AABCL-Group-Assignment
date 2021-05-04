@@ -1,111 +1,90 @@
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.*;
 
 public class MuseumController {
-    private final static int maxTickets = 900;
-    private static int ticketsSold = 0;
+    private static ArrayBlockingQueue<String[]> ticketQ = new ArrayBlockingQueue<>(900);
+    private static volatile BlockingQueue<Visitor> visitorQ = new DelayQueue<>();
+    private static volatile ArrayBlockingQueue<Visitor> exitQ = new ArrayBlockingQueue<>(900);
 
     public static void main(String[] args) {
 
-        // read TicketInfo
-        // 8am: start to random assign the ticket to south or north entrance (put() into blockingqueue)
+        Scanner scanner = new Scanner(System.in);
+        String userOption;
+        do {
+            System.out.println("\nOptions: ");
+            System.out.println("1. Execute random scenario");
+            System.out.println("2. Execute normal scenario");
+            System.out.print("Your option: ");
 
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
+            userOption = scanner.nextLine().trim();
 
-        Clock clock = new Clock();
-        Thread clockThread = new Thread(clock);
-        clockThread.start();
+        } while (!(userOption.equals("1") || userOption.equals("2")));
 
-        ArrayBlockingQueue<String[]> ticketQ = new ArrayBlockingQueue<>(900);
-        Thread ticketingThread = new Thread(new Ticketing(ticketQ));
-        ticketingThread.start();
+        System.out.println();
 
-        BlockingQueue<Visitor> visitorQ = new DelayQueue<>();
-        Museum museum = new Museum();
-        Thread entranceThread = new Thread(new Entrance(ticketQ, museum, visitorQ));
+        if (userOption.equals("1")) {
+            Clock clock = new Clock();
+            Thread clockThread = new Thread(clock);
+            clockThread.start();
 
-        while (Clock.getCurrentTime().before(Clock.getEntranceOpenTime())) {
-            //wait
+
+
+
+            Thread randomTicketingThread = new Thread(new RandomTicketing(ticketQ));
+            randomTicketingThread.start();
+
+            Museum museum = new Museum();
+            Thread entranceThread = new Thread(new Entrance(ticketQ, museum, visitorQ));
+
+            while (Clock.getCurrentTime().before(Clock.getEntranceOpenTime())) {
+                //wait
+            }
+
+            System.out.println("Entrance opens");
+            entranceThread.start();
+
+;
+            Thread exitThread = new Thread(new Exit(visitorQ, museum, exitQ));
+            exitThread.start();
         }
+        else {
+            String fileName = "";
 
-        System.out.println("Entrance open");
-        entranceThread.start();
+            if (userOption.equals("2")) {
+                fileName = "NormalScenario.txt";
+            }
 
-        Thread exitThread = new Thread(new Exit(visitorQ, museum));
-        exitThread.start();
+            TextReader tr = new TextReader(fileName);
+            ArrayList<String[]> allPurchases = tr.readTextFile();
 
-
-
-
-
-
-
-
-
+            Clock clock = new Clock();
+            Thread clockThread = new Thread(clock);
+            clockThread.start();
 
 
+            Thread ticketingThread = new Thread(new Ticketing(allPurchases, ticketQ));
+            ticketingThread.start();
+
+            Museum museum = new Museum();
+            Thread entranceThread = new Thread(new Entrance(ticketQ, museum, visitorQ));
+
+            while (Clock.getCurrentTime().before(Clock.getEntranceOpenTime())) {
+                //wait
+            }
+
+            System.out.println("Entrance opens");
+            entranceThread.start();
 
 
-//        System.out.println("Millis: " + System.currentTimeMillis());
-//        Calendar calendar = clock.getCurrentTime();
-//        System.out.println("Time is " + timeFormat.format(calendar.getTime()));
+            Thread exitThread = new Thread(new Exit(visitorQ, museum, exitQ));
+            exitThread.start();
+        }
+    }
 
-//        Runnable printTime = () -> {
-//            System.out.println("Time is " + timeFormat.format(calendar.getTime()));
-//        };
-//
-//        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//        scheduler.schedule(printTime, 10*1000, TimeUnit.MILLISECONDS);
-//
-//        scheduler.schedule(printTime, 12*1000, TimeUnit.MILLISECONDS);
-//
-//        scheduler.schedule(printTime, 15*1000, TimeUnit.MILLISECONDS);
-//
-//        scheduler.schedule(printTime, 60*1000, TimeUnit.MILLISECONDS);
-//
-//        scheduler.schedule(printTime, 100*1000, TimeUnit.MILLISECONDS);
-//
-//        scheduler.schedule(printTime, 150*1000, TimeUnit.MILLISECONDS);
-
-//        try {
-//            Thread.sleep(500*10);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.HOUR_OF_DAY, 10);
-//        calendar.set(Calendar.MINUTE, 1);
-//        calendar.set(Calendar.SECOND, 0);
-
-
-//        String timestamp = timeFormat.format(calendar.getTime());
-//
-//        MyTimerTask mtt = new MyTimerTask(timestamp);
-//        Timer timer = new Timer();
-//
-//        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        try {
-//            Date date = dateFormatter.parse("2022-04-01 10:01:00");
-//            timer.schedule(mtt, date);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        Date time = calendar.getTime();
-//        System.out.println(time);
-
-
-
-//        MyTimerTask mtt = new MyTimerTask(timestamp);
-//        Timer timer = new Timer();
-//        timer.schedule(mtt, time);
-//        timer.schedule(mtt, date);
+    public static boolean allVisitorsLeft() {
+        return exitQ.isEmpty();
     }
 }
 

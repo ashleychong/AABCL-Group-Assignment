@@ -20,7 +20,8 @@ public class Entrance implements Runnable {
 
             museum.enterMuseum(ticketQ, visitorQ);
 
-            long nextTicket = (long) (System.nanoTime() + (r.nextInt(4) + 1) * 1000000000L);
+            long nextTicket = (long) (System.nanoTime() + 1000000000L);
+//            long nextTicket = (long) (System.nanoTime() + (r.nextInt(2) + 1) * 1000000000L);
 
             while (System.nanoTime() < nextTicket) {
                 //wait
