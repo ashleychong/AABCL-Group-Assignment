@@ -4,7 +4,6 @@ import java.util.concurrent.BlockingQueue;
 
 public class Exit implements Runnable {
     private BlockingQueue<Visitor> visitorQ;
-//    private ArrayBlockingQueue<Visitor> exitQ = new ArrayBlockingQueue<>(900);
     private ArrayBlockingQueue<Visitor> exitQ;
     private Museum museum;
     Random r = new Random();
