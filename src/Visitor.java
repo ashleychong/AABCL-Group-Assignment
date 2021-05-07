@@ -51,15 +51,6 @@ public class Visitor implements Delayed {
 
     @Override
     public int compareTo(Delayed o) {
-//        if (this.getDelay(TimeUnit.MILLISECONDS) < o.getDelay(TimeUnit.MILLISECONDS)) {
-//            return -1;
-//        }
-//        else if (this.getDelay(TimeUnit.MILLISECONDS) > o.getDelay(TimeUnit.MILLISECONDS)) {
-//            return 1;
-//        }
-//        else {
-//            return 0;
-//        }
 
         if ((this.expireTime < ((Visitor) o).expireTime)) {
             return -1;
