@@ -21,27 +21,10 @@ public class Entrance implements Runnable {
             museum.enterMuseum(ticketQ, visitorQ);
 
             long nextTicket = (long) (System.nanoTime() + 1000000000L);
-//            long nextTicket = (long) (System.nanoTime() + (r.nextInt(2) + 1) * 1000000000L);
 
             while (System.nanoTime() < nextTicket) {
                 //wait
             }
-
-//            String[] ticInfo;
-//            if ((ticInfo = ticketQ.poll()) != null) {
-//                museum.enterMuseum(ticInfo[1]);
-//
-//                int choose = r.nextInt(2);
-//                String exit = (choose == 0) ? "East" : "West";
-//
-//                long delay = (r.nextInt(101) + 50) * 1000;
-//
-//                try {
-//                    visitorQ.put(new Visitor(ticInfo, exit));
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
         }
     }
 }

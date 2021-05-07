@@ -15,9 +15,6 @@ public class RandomTicketing implements Runnable {
         int ticketID = 1;
 
         System.out.println("Ticketing starts...");
-//        System.out.println("Current time: " + Clock.getCurrentTime().getTime());
-//        System.out.println("Tickets ends sale: " + Clock.getTicketEndSalesTime().getTime());
-//        System.out.println(Clock.getCurrentTime().before(Clock.getTicketEndSalesTime()));
 
         while (Clock.getCurrentTime().before(Clock.getTicketEndSalesTime())) {
 //
@@ -27,18 +24,6 @@ public class RandomTicketing implements Runnable {
             }
 
             int numOfTickets = r.nextInt(4) + 1;
-
-//            String ticketIDs = "";
-//
-//            for (int j = 1; j <= numOfTickets ; j++) {
-//                ticketIDs += "T" + ticketID;
-//                if (j < numOfTickets) {
-//                    ticketIDs += ", ";
-//                }
-//                ticketID++;
-//            }
-
-
 
             StringBuilder ticketIDs = new StringBuilder();
 
@@ -65,7 +50,6 @@ public class RandomTicketing implements Runnable {
 
 
             long stayDuration = (r.nextInt(101) + 50) * 1000;
-//            long stayDuration = (r.nextInt(101) + 50) * 1000000000L;
 
 
             int choose = r.nextInt(2);
@@ -73,7 +57,6 @@ public class RandomTicketing implements Runnable {
 
             String[] ticInfo = new String[4];
 
-//            ticInfo[0] = ticketIDs;
             ticInfo[0] = ticketIDs.toString();
             ticInfo[1] = String.valueOf(numOfTickets);
             ticInfo[2] = String.valueOf(stayDuration);
@@ -81,8 +64,6 @@ public class RandomTicketing implements Runnable {
 
             try {
                 ticketQ.put(ticInfo);
-//                System.out.println(ticketIDs + " sold.");
-
 
                 if (numOfTickets == 1) {
                     System.out.println("Ticket " + ticketIDs + " sold.");

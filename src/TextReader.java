@@ -1,9 +1,5 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Queue;
 
 public class TextReader {
     private String fileName;
@@ -16,7 +12,9 @@ public class TextReader {
         ArrayList<String[]> ticketInfo = new ArrayList<>();
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(fileName));
+            BufferedReader br =
+                    new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(fileName)));
+
             String curLine;
 
             while ((curLine = br.readLine()) != null) {
@@ -33,9 +31,4 @@ public class TextReader {
         }
         return ticketInfo;
     }
-
-//    public static void main(String[] args) {
-//        TextReader tr = new TextReader("NormalScenario.txt");
-//        tr.readTextFile();
-//    }
 }

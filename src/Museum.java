@@ -12,8 +12,6 @@ public class Museum {
     private ReentrantLock lock = new ReentrantLock();
     private Condition notFull = lock.newCondition();
     private Condition notEmpty = lock.newCondition();
-//    private ArrayBlockingQueue<String[]> ticketQ;
-//    private BlockingQueue<Visitor> visitorQ = new DelayQueue<>();
     private Random r = new Random();
 
 
@@ -23,12 +21,11 @@ public class Museum {
         try {
             while (numOfVisitorsInMuseum == maxNumOfVisitorsInMuseum) {
                 System.out.println("The museum is full now. Waiting...");
-//                notFull.await();
                 boolean awaken = notFull.await(3000, TimeUnit.MILLISECONDS);
 
                 if (!awaken) {
                     System.out.println("No visitor leaves. Timeout...");
-                    break;
+                    return;
                 }
             }
 
@@ -36,20 +33,16 @@ public class Museum {
             int sCount = 0;
             int nCount = 0;
 
-            int allowedNumOfVisitors = maxNumOfVisitorsInMuseum - numOfVisitorsInMuseum;
 
             outerloop:
-            while (((ticInfo = ticketQ.peek()) != null) /* && ((sCount + nCount) < allowedNumOfVisitors)*/) {
+            while (((ticInfo = ticketQ.peek()) != null)) {
                 String entrance = ticInfo[3];
                 int numOfVisitors = Integer.parseInt(ticInfo[1]);
 
-
-//                if (numOfVisitorsInMuseum + numOfVisitors > maxNumOfVisitorsInMuseum) {
-//                    System.out.println(numOfVisitorsInMuseum + " visitors in museum. " + numOfVisitors + " trying to " +
-//                            "enter, break...");
-//                    break;
-//                }
-
+                // if 4 visitors already entered through South entrance and current visitors try to use South
+                // entrance again OR
+                // 4 visitors already entered through North entrance and current visitors try to use North entrance
+                // again
                 if ((sCount >= 4 && entrance.equalsIgnoreCase("South")) || (nCount >= 4 && entrance.equalsIgnoreCase(
                         "North"))) {
 //                    System.out.println("South entrance: " + sCount + ", North entrance: " + nCount);
@@ -78,9 +71,8 @@ public class Museum {
 
 
                 while (numOfVisitorsInMuseum + numOfVisitors > maxNumOfVisitorsInMuseum) {
-                    System.out.println(numOfVisitorsInMuseum + " visitors in museum. " + numOfVisitors + " visitors" +
-                            " trying to " + "enter, waiting...");
-//                    notFull.await();
+                    System.out.println(numOfVisitorsInMuseum + " visitors in the museum. " + numOfVisitors + " " +
+                            "visitors" + " trying to " + "enter, waiting...");
                     boolean awaken = notFull.await(3000, TimeUnit.MILLISECONDS);
 
                     if (!awaken) {
@@ -88,7 +80,6 @@ public class Museum {
                         break outerloop;
                     }
                 }
-
 
                 ticketQ.poll();
 
@@ -111,8 +102,6 @@ public class Museum {
                 System.out.println("Number of visitors in the museum: " + numOfVisitorsInMuseum);
             }
 
-//            System.out.println("End of 1 entering. Number of visitors in the museum: " + numOfVisitorsInMuseum);
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -131,14 +120,14 @@ public class Museum {
 
             if (!awaken) {
                 System.out.println("No visitor enters. Timeout...");
-                break;
+                return;
             }
         }
             Visitor visitor;
             int eCount = 0;
             int wCount = 0;
 
-            // peek will return unexpired item in delay queue too
+
             while (((visitor = visitorQ.peek()) != null)) {
                 String ticketID = visitor.getTicketID();
 //                System.out.println("Check exit: " + ticketID);
@@ -209,17 +198,4 @@ public class Museum {
             lock.unlock();
         }
     }
-
-//    public void leaveMuseum(String ticketID, int numOfVisitors, String exit) {
-//        lock.lock();
-//        try {
-//            numOfVisitorsInMuseum -= numOfVisitors;
-//            System.out.println("Tickets " + ticketID + " exited through " + exit + " exit.");
-//            notFull.signalAll();
-//            System.out.println("Number of visitors in the museum: " + numOfVisitorsInMuseum);
-//        }
-//        finally {
-//            lock.unlock();
-//        }
-//    }
 }
