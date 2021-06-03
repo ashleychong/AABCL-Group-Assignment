@@ -1,0 +1,12 @@
+/.idea/
+*.class
+*.log
+*.jar
+*.iml
+/out/
+/src/BlockingQueueTest.java
+/src/VariableSpeedClock.java
+/src/DelayQDemo.java
+/src/META-INF/
+
+
