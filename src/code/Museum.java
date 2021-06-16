@@ -1,3 +1,10 @@
+package code;
+
+import controller.MuseumSceneController;
+import gui.SingleLeavingVisitor;
+import gui.SingleVisitor;
+
+import java.text.ParseException;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -6,7 +13,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Museum {
-    private int numOfVisitorsInMuseum = 0;
+    public static int totalNumOfVisitors = 0;
+    public static int numOfVisitorsInMuseum = 0;
     private final int maxNumOfVisitorsInMuseum = 100;
     private ReentrantLock lock = new ReentrantLock();
     private Condition notFull = lock.newCondition();
@@ -20,10 +28,12 @@ public class Museum {
         try {
             while (numOfVisitorsInMuseum == maxNumOfVisitorsInMuseum) {
                 System.out.println("The museum is full now. Waiting...");
+                MuseumSceneController.messageHere_str = "The museum is full now. Waiting...";
                 boolean awaken = notFull.await(3000, TimeUnit.MILLISECONDS);
 
                 if (!awaken) {
                     System.out.println("No visitor leaves. Timeout...");
+                    MuseumSceneController.messageHere_str = "No visitor leaves. Timeout...";
                     return;
                 }
             }
@@ -45,18 +55,16 @@ public class Museum {
                 if ((sCount >= 4 && entrance.equalsIgnoreCase("South")) || (nCount >= 4 && entrance.equalsIgnoreCase(
                         "North"))) {
 //                    System.out.println("South entrance: " + sCount + ", North entrance: " + nCount);
-//                    System.out.println("Entrance now: " + entrance);
+//                    System.out.println("code.Entrance now: " + entrance);
 //                    System.out.println("Break");
                     break;
                 }
 
                 if (entrance.equalsIgnoreCase("South") && sCount + numOfVisitors <= 4) {
                     sCount += numOfVisitors;
-                }
-                else if (entrance.equalsIgnoreCase("North") && nCount + numOfVisitors <= 4) {
+                } else if (entrance.equalsIgnoreCase("North") && nCount + numOfVisitors <= 4) {
                     nCount += numOfVisitors;
-                }
-                else {
+                } else {
 //                    if (entrance.equalsIgnoreCase("North")) {
 //                        System.out.println("North entrance count: " + nCount + ", " + numOfVisitors + " " +
 //                                " visitors trying to enter through North entrance. Break...");
@@ -70,12 +78,17 @@ public class Museum {
 
 
                 while (numOfVisitorsInMuseum + numOfVisitors > maxNumOfVisitorsInMuseum) {
-                    System.out.println(numOfVisitorsInMuseum + " visitors in the museum. " + numOfVisitors + " " +
-                            "visitors" + " trying to " + "enter, waiting...");
+                    String waitingQMsg = numOfVisitorsInMuseum + " visitors in the museum. " + numOfVisitors + " " +
+                            "visitors" + " trying to " + "enter, waiting...";
+                    System.out.println(waitingQMsg);
+                    MuseumSceneController.messageHere_str = waitingQMsg;
+
+
                     boolean awaken = notFull.await(3000, TimeUnit.MILLISECONDS);
 
                     if (!awaken) {
                         System.out.println("No visitor leaves. Timeout...");
+                        MuseumSceneController.messageHere_str = "No visitor leaves. Timeout...";
                         break outerloop;
                     }
                 }
@@ -90,15 +103,16 @@ public class Museum {
                 long duration = Long.parseLong(ticInfo[2]);
                 if (!(Clock.exceedCloseTime(duration))) {
                     visitorQ.put(new Visitor(ticInfo, exit, turnstileNum));
-                }
-                else {
+                } else {
                     ticInfo[2] = String.valueOf(Clock.getRemainingDuration());
                     visitorQ.put(new Visitor(ticInfo, exit, turnstileNum));
                 }
 
                 notEmpty.signalAll();
                 numOfVisitorsInMuseum += numOfVisitors;
-                System.out.println("Number of visitors in the museum: " + numOfVisitorsInMuseum);
+                totalNumOfVisitors += numOfVisitors;
+                String visitorNumInMusuemMsg = "Number of visitors in the museum: " + numOfVisitorsInMuseum;
+                System.out.println(visitorNumInMusuemMsg);
             }
 
         } catch (InterruptedException e) {
@@ -113,15 +127,17 @@ public class Museum {
 
         try {
             while (numOfVisitorsInMuseum == 0) {
-            System.out.println("No visitor in the museum. Waiting...");
+                System.out.println("No visitor in the museum. Waiting...");
+                MuseumSceneController.messageHere_str = "No visitor in the museum. Waiting...";
 
-            boolean awaken = notEmpty.await(3000, TimeUnit.MILLISECONDS);
+                boolean awaken = notEmpty.await(3000, TimeUnit.MILLISECONDS);
 
-            if (!awaken) {
-                System.out.println("No visitor enters. Timeout...");
-                return;
+                if (!awaken) {
+                    System.out.println("No visitor enters. Timeout...");
+                    MuseumSceneController.messageHere_str = "No visitor enters. Timeout...";
+                    return;
+                }
             }
-        }
             Visitor visitor;
             int eCount = 0;
             int wCount = 0;
@@ -151,8 +167,7 @@ public class Museum {
                         turnstile = "EET";
                         turnstileNum = eCount;
                         eCount += numOfVisitors;
-                    }
-                    else {
+                    } else {
                         turnstile = "WET";
                         turnstileNum = wCount;
                         wCount += numOfVisitors;
@@ -165,17 +180,16 @@ public class Museum {
                             sb.append(String.format("Ticket %s exited through Turnstile %s%d.\n", ticketIDs[i],
                                     turnstile,
                                     (turnstileNum + i + 1)));
-                        }
-                        else {
+                        } else {
                             sb.append(String.format("Ticket %s exited through Turnstile %s%d.", ticketIDs[i], turnstile,
                                     (turnstileNum + i + 1)));
                         }
+                        new SingleLeavingVisitor(ticketIDs[i], exit, turnstile + (turnstileNum + i + 1));
                     }
                     System.out.println(sb);
 //                    System.out.println(visitor.getExpireTime());
                     notFull.signalAll();
-                }
-                else {
+                } else {
 //                    if (exit.equalsIgnoreCase("East")) {
 //                        System.out.println("East exit count: " + eCount + ", " + numOfVisitors + " " +
 //                                " visitors trying to exit through East exit. Break...");
@@ -188,7 +202,8 @@ public class Museum {
                 }
                 visitorQ.poll();
                 numOfVisitorsInMuseum -= numOfVisitors;
-                System.out.println("Number of visitors in the museum: " + numOfVisitorsInMuseum);
+                String visitorNumInMuseumMsg = "Number of visitors in the museum: " + numOfVisitorsInMuseum;
+                System.out.println(visitorNumInMuseumMsg);
             }
 
         } catch (InterruptedException e) {

@@ -1,3 +1,5 @@
+package code;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -12,8 +14,9 @@ public class TextReader {
         ArrayList<String[]> ticketInfo = new ArrayList<>();
 
         try {
-            BufferedReader br =
-                    new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(fileName)));
+//            System.out.println(fileName);
+//            System.out.println(this.getClass().getResourceAsStream("/testCases/"+fileName));
+            BufferedReader br = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/testCases/"+fileName)));
 
             String curLine;
 

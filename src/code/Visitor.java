@@ -1,5 +1,17 @@
+package code;
+
+import controller.MuseumSceneController;
+import gui.SingleVisitor;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
+
+import static code.Clock.getTicketEndSalesTime;
+import static code.Clock.timeFormat;
 
 public class Visitor implements Delayed {
     private String ticketID;
@@ -15,8 +27,13 @@ public class Visitor implements Delayed {
 
         this.ticketID = ticInfo[0];
         this.numOfVisitors = Integer.parseInt(ticInfo[1]);
-        long stayDuration = Long.parseLong(ticInfo[2]);
+        int stayDuration = (int) Long.parseLong(ticInfo[2]);
         this.startTime = System.currentTimeMillis();
+        String startTime_gui = Clock.print;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HHmm");
+        LocalTime time = LocalTime.parse(startTime_gui, formatter);
+//        System.out.println("ssssss"+time + stayDuration + " " +formatter.format(time.plusMinutes(stayDuration)));
+        String expireTime_gui = formatter.format(time.plusMinutes(stayDuration / 1000));
         this.expireTime = startTime + stayDuration;
         this.entrance = ticInfo[3];
         this.exit = exit;
@@ -26,19 +43,20 @@ public class Visitor implements Delayed {
 
         StringBuilder sb = new StringBuilder();
         String turnstile = (entrance.equalsIgnoreCase("South")) ? "SET" : "NET";
-        int stayDurationInMinutes = (int) (stayDuration/1000);
+        int stayDurationInMinutes = (int) (stayDuration / 1000);
 
         for (int i = 0; i < ticketIDs.length; i++) {
             if (i < ticketIDs.length - 1) {
                 sb.append(String.format("Ticket %s entered through Turnstile %s%d. Staying for %d minutes.\n",
                         ticketIDs[i],
                         turnstile, (turnstileNum + i + 1), stayDurationInMinutes));
-            }
-            else {
+            } else {
                 sb.append(String.format("Ticket %s entered through Turnstile %s%d. Staying for %d minutes.",
                         ticketIDs[i],
                         turnstile, (turnstileNum + i + 1), stayDurationInMinutes));
             }
+            SingleVisitor newVst = new SingleVisitor(ticketIDs[i], stayDurationInMinutes, startTime_gui, expireTime_gui, entrance, exit, turnstile + (turnstileNum + i + 1));
+            MuseumSceneController.visitorList.add(newVst);
         }
         System.out.println(sb);
     }
@@ -54,23 +72,19 @@ public class Visitor implements Delayed {
 
         if ((this.expireTime < ((Visitor) o).expireTime)) {
             return -1;
-        }
-        else if ((this.expireTime > ((Visitor) o).expireTime)) {
+        } else if ((this.expireTime > ((Visitor) o).expireTime)) {
             return 1;
-        }
-        else {
+        } else {
             if ((this.startTime < ((Visitor) o).startTime)) {
                 return -1;
-            }
-            else if ((this.startTime > ((Visitor) o).startTime)) {
+            } else if ((this.startTime > ((Visitor) o).startTime)) {
                 return 1;
-            }
-            else return 0;
+            } else return 0;
         }
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return ticketID + " Expiry Time= " + expireTime;
     }
 

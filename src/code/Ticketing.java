@@ -1,8 +1,14 @@
+package code;
+
+import controller.MuseumSceneController;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Ticketing implements Runnable {
+    public static int totalTicketSold = 0;
+    public static String ticketingPrint;
     private ArrayList<String[]> allPurchases;
     private ArrayBlockingQueue<String[]> ticketQ;
     private final int maxTicketsSold = 900;
@@ -13,13 +19,21 @@ public class Ticketing implements Runnable {
         this.ticketQ = ticketQ;
     }
 
+    public static String printCounterOpenMsg() {
+        return "Ticketing starts...";
+    }
 
     @Override
     public void run() {
         int ticketID = 1;
 
-        System.out.println("Ticketing starts...");
-
+        System.out.println(printCounterOpenMsg());
+        while (true) {
+            if (MuseumSceneController.started) {
+                MuseumSceneController.messageHere_str = printCounterOpenMsg();
+            }
+            break;
+        }
 
         while (Clock.getCurrentTime().before(Clock.getTicketEndSalesTime()) && !(allPurchases.isEmpty())) {
 
@@ -75,6 +89,7 @@ public class Ticketing implements Runnable {
             ticInfo[1] = String.valueOf(numOfTickets);
             ticInfo[2] = String.valueOf(stayDuration);
             ticInfo[3] = entrance;
+            totalTicketSold +=numOfTickets;
 
             try {
                 ticketQ.put(ticInfo);
@@ -85,6 +100,7 @@ public class Ticketing implements Runnable {
                 else {
                     System.out.println("Tickets " + ticketIDs + " sold.");
                 }
+                ticketingPrint = String.valueOf(ticketIDs);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

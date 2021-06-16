@@ -1,7 +1,13 @@
+package code;
+
+import controller.MuseumSceneController;
+
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class RandomTicketing implements Runnable {
+    public static int totalTicketSold = 0;
+    public static String ticketingPrint;
     private ArrayBlockingQueue<String[]> ticketQ;
     private Random r = new Random();
     private final int maxTicketsSold = 900;
@@ -10,20 +16,36 @@ public class RandomTicketing implements Runnable {
         this.ticketQ = ticketQ;
     }
 
+    public static String printCounterOpenMsg() {
+        return "Ticketing starts...";
+    }
+
+//    public static String getTicketingPrint() {
+//        return ticketingPrint;
+//    }
+
     @Override
     public void run() {
         int ticketID = 1;
 
-        System.out.println("Ticketing starts...");
+        System.out.println(printCounterOpenMsg());
+        while (true) {
+            if (MuseumSceneController.started) {
+                MuseumSceneController.messageHere_str = printCounterOpenMsg();
+            }
+            break;
+        }
 
         while (Clock.getCurrentTime().before(Clock.getTicketEndSalesTime())) {
 //
-            if (ticketID > maxTicketsSold)  {
+            if (ticketID > maxTicketsSold) {
                 System.out.println("Max ticket limit of 900 has been reached. Transaction declined.");
+                MuseumSceneController.messageHere_str = "Max ticket limit of 900 has been reached. Transaction declined.";
                 break;
             }
 
             int numOfTickets = r.nextInt(4) + 1;
+            totalTicketSold +=numOfTickets;
 
             StringBuilder ticketIDs = new StringBuilder();
 
@@ -31,12 +53,10 @@ public class RandomTicketing implements Runnable {
                 if (Math.log10(ticketID) < 1) {
                     ticketIDs.append("T000");
                     ticketIDs.append(ticketID);
-                }
-                else if (Math.log10(ticketID) < 2) {
+                } else if (Math.log10(ticketID) < 2) {
                     ticketIDs.append("T00");
                     ticketIDs.append(ticketID);
-                }
-                else if (Math.log10(ticketID) < 3) {
+                } else if (Math.log10(ticketID) < 3) {
                     ticketIDs.append("T0");
                     ticketIDs.append(ticketID);
                 }
@@ -46,7 +66,6 @@ public class RandomTicketing implements Runnable {
                 }
                 ticketID++;
             }
-
 
 
             long stayDuration = (r.nextInt(101) + 50) * 1000;
@@ -67,10 +86,10 @@ public class RandomTicketing implements Runnable {
 
                 if (numOfTickets == 1) {
                     System.out.println("Ticket " + ticketIDs + " sold.");
-                }
-                else {
+                } else {
                     System.out.println("Tickets " + ticketIDs + " sold.");
                 }
+                ticketingPrint = String.valueOf(ticketIDs);
 
 
             } catch (InterruptedException e) {

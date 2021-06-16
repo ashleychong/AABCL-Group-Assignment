@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="309.0" prefWidth="493.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+   <children>
+      <Button fx:id="submitBtn" layoutX="220.0" layoutY="256.0" mnemonicParsing="false" onAction="#switchToMuseumScene" text="Submit" />
+      <TextField fx:id="userOption" layoutX="128.0" layoutY="215.0" prefHeight="26.0" prefWidth="291.0" promptText="Enter number" />
+      <Label fx:id="option" layoutX="72.0" layoutY="219.0" text="Option:" />
+      <Label layoutX="72.0" layoutY="34.0" text="Please select an option below: " />
+      <Label layoutX="80.0" layoutY="80.0" text="1. Execute random scenario" />
+      <Label layoutX="80.0" layoutY="107.0" text="2. Execute test case 'Exceed 100 visitors at one time'" />
+      <Label layoutX="80.0" layoutY="135.0" text="3. Execute test case 'Exceed 900 tickets'" />
+      <Label layoutX="80.0" layoutY="163.0" text="4. Execute test case 'Exceed 6:00 p.m.'" />
+      <Text fx:id="exceptionText" fill="RED" layoutX="129.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+   </children>
+</AnchorPane>

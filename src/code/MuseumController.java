@@ -1,12 +1,16 @@
-import java.text.SimpleDateFormat;
+package code;
+
+import controller.MuseumSceneController;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
 public class MuseumController {
-    private static ArrayBlockingQueue<String[]> ticketQ = new ArrayBlockingQueue<>(900);
-    private static volatile BlockingQueue<Visitor> visitorQ = new DelayQueue<>();
-    private static volatile ArrayBlockingQueue<Visitor> exitQ = new ArrayBlockingQueue<>(900);
+    public static ArrayBlockingQueue<String[]> ticketQ = new ArrayBlockingQueue<>(900);
+    public static volatile BlockingQueue<Visitor> visitorQ = new DelayQueue<>();
+    public static volatile ArrayBlockingQueue<Visitor> exitQ = new ArrayBlockingQueue<>(900);
+    static String[] options = {"1. Execute random scenario", "2. Execute test case 'Exceed 100 visitors at one time'", "3. Execute test case 'Exceed 900 tickets'", "4. Execute test case 'Exceed 6:00 p.m.'"};
 
     public static void main(String[] args) {
 
@@ -15,10 +19,9 @@ public class MuseumController {
 
         do {
             System.out.println("\nOptions: ");
-            System.out.println("1. Execute random scenario");
-            System.out.println("2. Execute test case 'Exceed 100 visitors at one time'");
-            System.out.println("3. Execute test case 'Exceed 900 tickets'");
-            System.out.println("4. Execute test case 'Exceed 6:00 p.m.'");
+            for (String o : options) {
+                System.out.println(o);
+            }
             System.out.print("Your option: ");
 
             userOption = scanner.nextLine().trim();
@@ -27,7 +30,20 @@ public class MuseumController {
 
         System.out.println();
 
+        redirectToSelectedOption(userOption);
+
+    }
+
+    public static boolean allVisitorsLeft() {
+        return exitQ.isEmpty();
+    }
+
+    public static void redirectToSelectedOption(String userOption) {
         if (userOption.equals("1")) {
+//            ExecutorService service = Executors.newCachedThreadPool();
+//            Clock clock = new Clock();
+//            Future<String> clockThread = service.submit(clock);
+//            service.shutdown();
             Clock clock = new Clock();
             Thread clockThread = new Thread(clock);
             clockThread.start();
@@ -42,13 +58,14 @@ public class MuseumController {
                 //wait
             }
 
-            System.out.println("Entrance opens...");
+            System.out.println(printEntranceOpenMsg());
+            MuseumSceneController.messageHere_str += printEntranceOpenMsg();
             entranceThread.start();
 
             Thread exitThread = new Thread(new Exit(visitorQ, museum, exitQ));
             exitThread.start();
-        }
-        else {
+//            service.shutdown();
+        } else {
             String fileName = "";
 
             switch (userOption) {
@@ -70,6 +87,9 @@ public class MuseumController {
             Clock clock = new Clock();
             Thread clockThread = new Thread(clock);
             clockThread.start();
+//            ExecutorService service = Executors.newCachedThreadPool();
+//            Clock clock = new Clock();
+//            Future<String> clockThread = service.submit(clock);
 
             Thread ticketingThread = new Thread(new Ticketing(allPurchases, ticketQ));
             ticketingThread.start();
@@ -81,17 +101,22 @@ public class MuseumController {
                 //wait
             }
 
-            System.out.println("Entrance opens");
+            System.out.println(printEntranceOpenMsg());
             entranceThread.start();
 
 
             Thread exitThread = new Thread(new Exit(visitorQ, museum, exitQ));
             exitThread.start();
+//            service.shutdown();
         }
     }
 
-    public static boolean allVisitorsLeft() {
-        return exitQ.isEmpty();
+    public static String getOptions(int userOpt) {
+        return options[userOpt-1];
+    }
+
+    public static String printEntranceOpenMsg(){
+        return "Entrance opens...";
     }
 }
 
