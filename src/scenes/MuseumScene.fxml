@@ -13,197 +13,220 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="722.0" prefWidth="924.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MuseumSceneController">
-   <children>
-      <TableView fx:id="ticket_table" layoutX="-1.0" layoutY="212.0" prefHeight="510.0" prefWidth="263.0">
-        <columns>
-          <TableColumn fx:id="ticket_time" prefWidth="53.60000687837601" text="Time" />
-          <TableColumn fx:id="ticket_idSold" prefWidth="214.39997482299805" text="Ticket ID Sold" />
-        </columns>
-      </TableView>
-      <Label layoutX="63.0" layoutY="154.0" text="Ticketing System">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <ToolBar prefHeight="47.0" prefWidth="850.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-         <items>
-            <Button fx:id="startBtn" mnemonicParsing="false" onAction="#startSimulating" text="Start" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Selected case: " />
-            <Text fx:id="selectedCaseTitle" strokeType="OUTSIDE" strokeWidth="0.0">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font></Text>
-         </items>
-      </ToolBar>
-      <ScrollPane fx:id="topMessages" layoutX="-1.0" layoutY="44.0" prefHeight="110.0" prefWidth="850.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-         <content>
-            <Text fx:id="messageHere" strokeType="OUTSIDE" strokeWidth="0.0" text=" Annoucement message here..." wrappingWidth="824.8000427246093">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Text>
-         </content></ScrollPane>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1e1e1" height="568.0" layoutX="295.0" layoutY="154.0" stroke="#bfbfbf" strokeType="INSIDE" width="672.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="-3.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" height="51.0" layoutX="658.0" layoutY="225.0" stroke="BLACK" strokeType="INSIDE" width="113.0" />
-      <Text fx:id="simulatingClock" fill="WHITE" layoutX="678.0" layoutY="264.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0000" wrappingWidth="89.59999999999997">
-         <font>
-            <Font size="35.0" />
-         </font>
-      </Text>
-      <Text layoutX="43.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total # of tickets sold: " />
-      <Text fx:id="totalTicketSold" fill="#8071ff" layoutX="204.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Text>
-      <Label layoutX="664.0" layoutY="202.0" text="North Entrance">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="665.0" layoutY="278.0" text="South Entrance">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="776.0" layoutY="242.0" text="East Exit">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="591.0" layoutY="241.0" text="West Exit">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="127.0" layoutX="291.0" layoutY="188.0" stroke="BLACK" strokeType="INSIDE" width="188.0" />
-      <Text layoutX="300.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total # of visitor:" />
-      <Text fx:id="totalVisitorEntered" fill="#8071ff" layoutX="419.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Text>
-      <Label layoutX="631.0" layoutY="182.0" prefHeight="18.0" prefWidth="41.0" text="T1" />
-      <Label layoutX="680.0" layoutY="182.0" prefHeight="18.0" prefWidth="41.0" text="T2" />
-      <Label layoutX="731.0" layoutY="182.0" prefHeight="18.0" prefWidth="41.0" text="T3" />
-      <Label layoutX="780.0" layoutY="182.0" prefHeight="18.0" prefWidth="41.0" text="T4" />
-      <ProgressIndicator fx:id="percentageInside" layoutX="374.0" layoutY="244.0" prefHeight="62.0" prefWidth="55.0" progress="0.0" />
-      <Text layoutX="300.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Musuem:" />
-      <Text fx:id="totalVisitorInside" fill="#8071ff" layoutX="378.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0/100">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Text>
-      <TableView fx:id="visitor_table" layoutX="293.0" layoutY="344.0" prefHeight="354.0" prefWidth="602.0">
-        <columns>
-          <TableColumn fx:id="visitor_startTime" prefWidth="78.4000244140625" text="In Time" />
-          <TableColumn fx:id="visitor_ticketID" prefWidth="117.60003662109375" text="Ticket ID In" />
-            <TableColumn fx:id="visitor_stayDuration" prefWidth="116.79998779296875" text="Stay Duration" />
-            <TableColumn fx:id="visitor_entrance" prefWidth="102.39996337890625" text="Entrance" />
-            <TableColumn fx:id="visitor_expireTime" prefWidth="103.20001220703125" text="Out Time" />
-            <TableColumn fx:id="visitor_exit" prefWidth="85.5999755859375" text="Exit" />
-        </columns>
-      </TableView>
-      <Label fx:id="visitorID" layoutX="411.0" layoutY="411.0" text="Label">
-         <tooltip>
-            <Tooltip fx:id="visitorID_stayDuration" text="Empty Tooltip" />
-<!--            <showDuration>-->
-<!--               <Duration millis="1" />-->
-<!--            </showDuration>-->
-         </tooltip>
-      </Label>
-      <Text fx:id="nt1" fill="BLUE" layoutX="624.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="nt2" fill="BLUE" layoutX="673.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="nt3" fill="BLUE" layoutX="726.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="nt4" fill="BLUE" layoutX="775.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Label layoutX="634.0" layoutY="302.0" prefHeight="18.0" prefWidth="41.0" text="T1" />
-      <Label layoutX="683.0" layoutY="302.0" prefHeight="18.0" prefWidth="41.0" text="T2" />
-      <Label layoutX="734.0" layoutY="302.0" prefHeight="18.0" prefWidth="41.0" text="T3" />
-      <Label layoutX="783.0" layoutY="302.0" prefHeight="18.0" prefWidth="41.0" text="T4" />
-      <Text fx:id="st1" fill="BLUE" layoutX="627.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="st2" fill="BLUE" layoutX="676.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="st3" fill="BLUE" layoutX="729.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="st4" fill="BLUE" layoutX="778.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Label layoutX="838.0" layoutY="210.0" prefHeight="18.0" prefWidth="41.0" text="T1" />
-      <Label layoutX="838.0" layoutY="234.0" prefHeight="18.0" prefWidth="41.0" text="T2" />
-      <Label layoutX="838.0" layoutY="258.0" prefHeight="18.0" prefWidth="41.0" text="T3" />
-      <Label layoutX="838.0" layoutY="281.0" prefHeight="18.0" prefWidth="41.0" text="T4" />
-      <Label layoutX="570.0" layoutY="209.0" prefHeight="18.0" prefWidth="41.0" text="T1" />
-      <Label layoutX="570.0" layoutY="233.0" prefHeight="18.0" prefWidth="41.0" text="T2" />
-      <Label layoutX="570.0" layoutY="257.0" prefHeight="18.0" prefWidth="41.0" text="T3" />
-      <Label layoutX="570.0" layoutY="280.0" prefHeight="18.0" prefWidth="41.0" text="T4" />
-      <Text fx:id="et1" fill="RED" layoutX="859.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="et2" fill="RED" layoutX="859.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="et3" fill="RED" layoutX="859.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="et4" fill="RED" layoutX="859.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="wt1" fill="RED" layoutX="530.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="wt2" fill="RED" layoutX="530.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="wt3" fill="RED" layoutX="530.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-      <Text fx:id="wt4" fill="RED" layoutX="530.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Text>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="722.0"
+            prefWidth="924.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.MuseumSceneController">
+    <children>
+        <TableView fx:id="ticket_table" layoutX="-1.0" layoutY="212.0" prefHeight="510.0" prefWidth="263.0">
+            <columns>
+                <TableColumn fx:id="ticket_time" prefWidth="53.60000687837601" text="Time"/>
+                <TableColumn fx:id="ticket_idSold" prefWidth="214.39997482299805" text="Ticket ID Sold"/>
+            </columns>
+        </TableView>
+        <Label layoutX="63.0" layoutY="154.0" text="Ticketing System">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Label>
+        <ToolBar prefHeight="47.0" prefWidth="850.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <items>
+                <Button fx:id="startBtn" mnemonicParsing="false" onAction="#startSimulating" text="Start"/>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Selected case: "/>
+                <Text fx:id="selectedCaseTitle" strokeType="OUTSIDE" strokeWidth="0.0">
+                    <font>
+                        <Font name="System Bold" size="18.0"/>
+                    </font>
+                </Text>
+            </items>
+        </ToolBar>
+        <ScrollPane fx:id="topMessages" layoutX="-1.0" layoutY="44.0" prefHeight="110.0" prefWidth="850.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <content>
+                <Text fx:id="messageHere" strokeType="OUTSIDE" strokeWidth="0.0" text=" Annoucement message here..."
+                      wrappingWidth="824.8000427246093">
+                    <font>
+                        <Font size="20.0"/>
+                    </font>
+                </Text>
+            </content>
+        </ScrollPane>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e1e1e1" height="568.0" layoutX="295.0" layoutY="154.0"
+                   stroke="#bfbfbf" strokeType="INSIDE" width="672.0" AnchorPane.bottomAnchor="0.0"
+                   AnchorPane.rightAnchor="-3.0"/>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" height="51.0" layoutX="658.0" layoutY="225.0" stroke="BLACK"
+                   strokeType="INSIDE" width="113.0"/>
+        <Text fx:id="simulatingClock" fill="WHITE" layoutX="678.0" layoutY="264.0" strokeType="OUTSIDE"
+              strokeWidth="0.0" text="0000" wrappingWidth="89.59999999999997">
+            <font>
+                <Font size="35.0"/>
+            </font>
+        </Text>
+        <Text layoutX="43.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total # of tickets sold: "/>
+        <Text fx:id="totalTicketSold" fill="#8071ff" layoutX="204.0" layoutY="202.0" strokeType="OUTSIDE"
+              strokeWidth="0.0" text="0">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Text>
+        <Label layoutX="664.0" layoutY="202.0" text="North Entrance">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Label>
+        <Label layoutX="665.0" layoutY="278.0" text="South Entrance">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Label>
+        <Label layoutX="776.0" layoutY="242.0" text="East Exit">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Label>
+        <Label layoutX="591.0" layoutY="241.0" text="West Exit">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Label>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="127.0" layoutX="291.0" layoutY="188.0"
+                   stroke="BLACK" strokeType="INSIDE" width="188.0"/>
+        <Text layoutX="300.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total # of visitor:"/>
+        <Text fx:id="totalVisitorEntered" fill="#8071ff" layoutX="419.0" layoutY="208.0" strokeType="OUTSIDE"
+              strokeWidth="0.0" text="0">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Text>
+        <Label layoutX="631.0" layoutY="182.0" prefHeight="18.0" prefWidth="41.0" text="T1"/>
+        <Label layoutX="680.0" layoutY="182.0" prefHeight="18.0" prefWidth="41.0" text="T2"/>
+        <Label layoutX="731.0" layoutY="182.0" prefHeight="18.0" prefWidth="41.0" text="T3"/>
+        <Label layoutX="780.0" layoutY="182.0" prefHeight="18.0" prefWidth="41.0" text="T4"/>
+        <ProgressIndicator fx:id="percentageInside" layoutX="374.0" layoutY="244.0" prefHeight="62.0" prefWidth="55.0"
+                           progress="0.0"/>
+        <Text layoutX="300.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Musuem:"/>
+        <Text fx:id="totalVisitorInside" fill="#8071ff" layoutX="378.0" layoutY="231.0" strokeType="OUTSIDE"
+              strokeWidth="0.0" text="0/100">
+            <font>
+                <Font name="System Bold" size="14.0"/>
+            </font>
+        </Text>
+        <TableView fx:id="visitor_table" layoutX="293.0" layoutY="344.0" prefHeight="354.0" prefWidth="602.0">
+            <columns>
+                <TableColumn fx:id="visitor_startTime" prefWidth="78.4000244140625" text="In Time"/>
+                <TableColumn fx:id="visitor_ticketID" prefWidth="117.60003662109375" text="Ticket ID In"/>
+                <TableColumn fx:id="visitor_stayDuration" prefWidth="116.79998779296875" text="Stay Duration"/>
+                <TableColumn fx:id="visitor_entrance" prefWidth="102.39996337890625" text="Entrance"/>
+                <TableColumn fx:id="visitor_expireTime" prefWidth="103.20001220703125" text="Out Time"/>
+                <TableColumn fx:id="visitor_exit" prefWidth="85.5999755859375" text="Exit"/>
+            </columns>
+        </TableView>
+        <Label fx:id="visitorID" layoutX="411.0" layoutY="411.0" text="Label">
+            <tooltip>
+                <Tooltip fx:id="visitorID_stayDuration" text="Empty Tooltip"/>
+                <!--            <showDuration>-->
+                <!--               <Duration millis="1" />-->
+                <!--            </showDuration>-->
+            </tooltip>
+        </Label>
+        <Text fx:id="nt1" fill="BLUE" layoutX="624.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="nt2" fill="BLUE" layoutX="673.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="nt3" fill="BLUE" layoutX="726.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="nt4" fill="BLUE" layoutX="775.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Label layoutX="634.0" layoutY="302.0" prefHeight="18.0" prefWidth="41.0" text="T1"/>
+        <Label layoutX="683.0" layoutY="302.0" prefHeight="18.0" prefWidth="41.0" text="T2"/>
+        <Label layoutX="734.0" layoutY="302.0" prefHeight="18.0" prefWidth="41.0" text="T3"/>
+        <Label layoutX="783.0" layoutY="302.0" prefHeight="18.0" prefWidth="41.0" text="T4"/>
+        <Text fx:id="st1" fill="BLUE" layoutX="627.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="st2" fill="BLUE" layoutX="676.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="st3" fill="BLUE" layoutX="729.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="st4" fill="BLUE" layoutX="778.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0"
+              text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Label layoutX="838.0" layoutY="210.0" prefHeight="18.0" prefWidth="41.0" text="T1"/>
+        <Label layoutX="838.0" layoutY="234.0" prefHeight="18.0" prefWidth="41.0" text="T2"/>
+        <Label layoutX="838.0" layoutY="258.0" prefHeight="18.0" prefWidth="41.0" text="T3"/>
+        <Label layoutX="838.0" layoutY="281.0" prefHeight="18.0" prefWidth="41.0" text="T4"/>
+        <Label layoutX="570.0" layoutY="209.0" prefHeight="18.0" prefWidth="41.0" text="T1"/>
+        <Label layoutX="570.0" layoutY="233.0" prefHeight="18.0" prefWidth="41.0" text="T2"/>
+        <Label layoutX="570.0" layoutY="257.0" prefHeight="18.0" prefWidth="41.0" text="T3"/>
+        <Label layoutX="570.0" layoutY="280.0" prefHeight="18.0" prefWidth="41.0" text="T4"/>
+        <Text fx:id="et1" fill="RED" layoutX="859.0" layoutY="223.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="et2" fill="RED" layoutX="859.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="et3" fill="RED" layoutX="859.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="et4" fill="RED" layoutX="859.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="wt1" fill="RED" layoutX="530.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="wt2" fill="RED" layoutX="530.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="wt3" fill="RED" layoutX="530.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+        <Text fx:id="wt4" fill="RED" layoutX="530.0" layoutY="292.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T001">
+            <font>
+                <Font name="System Bold" size="12.0"/>
+            </font>
+        </Text>
+    </children>
 </AnchorPane>

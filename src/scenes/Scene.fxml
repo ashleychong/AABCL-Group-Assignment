@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="309.0" prefWidth="493.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="309.0" prefWidth="493.0"  xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.Controller">
    <children>
       <Button fx:id="submitBtn" layoutX="220.0" layoutY="256.0" mnemonicParsing="false" onAction="#switchToMuseumScene" text="Submit" />
       <TextField fx:id="userOption" layoutX="128.0" layoutY="215.0" prefHeight="26.0" prefWidth="291.0" promptText="Enter number" />

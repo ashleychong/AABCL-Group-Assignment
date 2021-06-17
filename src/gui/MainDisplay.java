@@ -4,11 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.util.Objects;
 
 public class MainDisplay extends Application {
 
@@ -21,7 +17,10 @@ public class MainDisplay extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../scenes/Scene.fxml")));
+//        Parent root = FXMLLoader.load(getClass().getResource("../gui/Scene.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/scenes/Scene.fxml"));
+        Parent root = (Parent) loader.load();
         window.setTitle("Welcome to Museum AABCL");
         window.setScene(new Scene(root, 500, 300));
         window.show();
